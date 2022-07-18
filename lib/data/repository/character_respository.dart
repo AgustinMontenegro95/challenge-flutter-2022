@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:challenge_flutter_2022/data/models/character_model.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class CharacterRepository {
@@ -18,15 +19,12 @@ class CharacterRepository {
             .toList();
         return characters;
       } else if (response.statusCode == 404) {
-        //ver bien el 404
-        return [];
-      } else {
-        print('Request failed with status: ${response.statusCode}.');
         return [];
       }
+      return [];
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
+      return [];
     }
-    return [];
   }
 }
