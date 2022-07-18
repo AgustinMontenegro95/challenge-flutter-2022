@@ -60,9 +60,10 @@ class AttributesScreen extends StatelessWidget {
                               attribute: "Homeworld", value: attributes[2][0]),
                           _cardAttribute(context,
                               attribute: "Height",
-                              value: characterModel.height),
+                              value: '${characterModel.height} cm'),
                           _cardAttribute(context,
-                              attribute: "Mass", value: characterModel.mass),
+                              attribute: "Mass",
+                              value: '${characterModel.mass} kg'),
                           _cardAttribute(context,
                               attribute: "Hair color",
                               value: characterModel.hairColor),
@@ -102,11 +103,11 @@ class AttributesScreen extends StatelessWidget {
             builder: (context, stateConnection) {
               if (stateConnection is DisconnectedState) {
                 return FloatingActionButton.extended(
-                    backgroundColor: Colors.grey,
+                    backgroundColor: Colors.grey.withOpacity(0.5),
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         backgroundColor: Colors.blueGrey[900],
-                        content: const Text('The connection is disabled'),
+                        content: const Text('The connection is disabled.'),
                         duration: const Duration(seconds: 3),
                         action: SnackBarAction(
                           textColor: Colors.amber,
@@ -117,11 +118,14 @@ class AttributesScreen extends StatelessWidget {
                         ),
                       ));
                     },
-                    label: Text("Sighting report".toUpperCase()));
+                    label: Text(
+                      "Sighting report",
+                      style: jediStyle,
+                    ));
               }
               if (stateConnection is ConnectedState) {
                 return FloatingActionButton.extended(
-                  backgroundColor: Colors.blue.withOpacity(0.3),
+                  backgroundColor: floatingButtonColor,
                   onPressed: () {
                     BlocProvider.of<ReportSightingBloc>(context).add(
                       LoadReportSightingEvent(
@@ -129,7 +133,10 @@ class AttributesScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  label: Text("Sighting report".toUpperCase()),
+                  label: Text(
+                    "Sighting report",
+                    style: jediStyle,
+                  ),
                 );
               }
               return Container();
@@ -189,17 +196,33 @@ class AttributesScreen extends StatelessWidget {
                             'Date: ${data['dateTime'].toString().substring(0, 19)}',
                             style: jediStyle),
                         Text('Site: Planet Earth', style: jediStyle),
+                        Text(
+                          'Thank you for sending the report, you are helping to take care of planet earth.',
+                          style: joutStyle.copyWith(
+                            color: Colors.greenAccent,
+                          ),
+                        ),
                       ],
                     )
-                  : Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(text: 'Status: ', style: jediStyle),
+                  : Column(
+                      children: [
+                        Text.rich(
                           TextSpan(
-                              text: 'Error',
-                              style: jediStyle.copyWith(color: Colors.red)),
-                        ],
-                      ),
+                            children: [
+                              TextSpan(text: 'Status: ', style: jediStyle),
+                              TextSpan(
+                                  text: 'Error',
+                                  style: jediStyle.copyWith(color: Colors.red)),
+                            ],
+                          ),
+                        ),
+                        Text(
+                          'An error has occurred, please try again.',
+                          style: joutStyle.copyWith(
+                            color: Colors.redAccent,
+                          ),
+                        ),
+                      ],
                     ),
               actions: <Widget>[
                 TextButton(
@@ -230,7 +253,6 @@ class AttributesScreen extends StatelessWidget {
       {required String attribute, required String value}) {
     return Container(
       margin: const EdgeInsets.all(3),
-      //padding: const EdgeInsets.all(5),
       width: MediaQuery.of(context).size.width * 0.9,
       decoration: BoxDecoration(
           color: Colors.black.withOpacity(0.7),
@@ -248,7 +270,9 @@ class AttributesScreen extends StatelessWidget {
             child: Text("${attribute.toUpperCase()} ",
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                    color: Colors.white, fontWeight: FontWeight.bold)),
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 3)),
           ),
           Text(
             value.toLowerCase(),
@@ -268,7 +292,6 @@ class AttributesScreen extends StatelessWidget {
     for (var i = 0; i < attributes.length; i++) {
       return Container(
         margin: const EdgeInsets.all(3),
-        //padding: const EdgeInsets.all(5),
         width: MediaQuery.of(context).size.width * 0.9,
         decoration: BoxDecoration(
             color: Colors.black.withOpacity(0.7),
@@ -285,7 +308,9 @@ class AttributesScreen extends StatelessWidget {
               child: Text("${attribute.toUpperCase()} ",
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold)),
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 3)),
             ),
             ListView.builder(
               physics: const NeverScrollableScrollPhysics(),

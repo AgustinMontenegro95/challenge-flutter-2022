@@ -1,4 +1,5 @@
 import 'package:challenge_flutter_2022/bloc/connection_switch/connection_switch_bloc.dart';
+import 'package:challenge_flutter_2022/constants/constants.dart';
 import 'package:challenge_flutter_2022/screens/widgets/app_bar.dart';
 import 'package:challenge_flutter_2022/screens/widgets/background.dart';
 import 'package:flutter/material.dart';
@@ -15,36 +16,10 @@ class SettingsScreen extends StatelessWidget {
       body: BlocBuilder<ConnectionSwitchBloc, ConnectionSwitchState>(
         builder: (context, state) {
           if (state is DisconnectedState) {
-            return Stack(
-              children: [
-                const Background(
-                  image: 'control-panel-enabled.png',
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(child: Container()),
-                    _connectionSwitch(context, initialValue: false),
-                  ],
-                ),
-              ],
-            );
+            return _body(context, image: 'disabled', initialValue: false);
           }
           if (state is ConnectedState) {
-            return Stack(
-              children: [
-                const Background(
-                  image: 'control-panel-disabled.png',
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(child: Container()),
-                    _connectionSwitch(context, initialValue: true),
-                  ],
-                ),
-              ],
-            );
+            return _body(context, image: 'enabled', initialValue: true);
           }
           return Container();
         },
@@ -52,22 +27,51 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _connectionSwitch(BuildContext context, {required bool initialValue}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  Stack _body(BuildContext context,
+      {required String image, required bool initialValue}) {
+    return Stack(
       children: [
-        const Text(
-          "Connection status: ",
-          style: TextStyle(color: Colors.white),
+        Background(
+          image: 'control-panel-$image.png',
         ),
-        Switch(
-          value: initialValue,
-          onChanged: (value) {
-            BlocProvider.of<ConnectionSwitchBloc>(context)
-                .add((LoadConnectionEvent(statusSwitch: value)));
-          },
-          activeTrackColor: Colors.blueAccent,
-          activeColor: Colors.blue,
+        Column(
+          children: [
+            SizedBox(height: MediaQuery.of(context).size.height * 0.6),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  "Connection status: ",
+                  style: jholStyle.copyWith(fontSize: 18),
+                ),
+                Switch(
+                  value: initialValue,
+                  onChanged: (value) {
+                    BlocProvider.of<ConnectionSwitchBloc>(context)
+                        .add((LoadConnectionEvent(statusSwitch: value)));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.blueGrey[900],
+                        content: Text(value
+                            ? 'The connection is enabled, report the characters before they find you. Good luck to you.'
+                            : 'The connection is disabled, they will not be able to find you. You are safe.'),
+                      ),
+                    );
+                  },
+                  activeTrackColor: Colors.cyanAccent,
+                  activeColor: Colors.cyanAccent[700],
+                  inactiveTrackColor: Colors.grey,
+                  inactiveThumbColor: Colors.white,
+                ),
+              ],
+            ),
+            Text(
+              initialValue ? 'connected' : 'disconnected',
+              style: joutStyle.copyWith(
+                  color: initialValue ? Colors.green : Colors.red,
+                  fontSize: 30),
+            ),
+          ],
         ),
       ],
     );

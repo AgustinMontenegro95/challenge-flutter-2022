@@ -87,7 +87,12 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Text(
               characters[i].gender.toUpperCase(),
-              style: const TextStyle(fontSize: 15, color: Colors.white),
+              style: const TextStyle(
+                fontSize: 15,
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 5,
+              ),
             ),
           ],
         ),
@@ -158,9 +163,10 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Text(
           buttonPage.toString(),
           style: TextStyle(
-              fontSize: page == buttonPage ? 35 : 20,
+              fontSize: page == buttonPage ? 30 : 20,
               color: fontColor,
-              fontFamily: 'starjedi'),
+              fontFamily: page == buttonPage ? 'starjedi' : 'starjhol',
+              fontWeight: FontWeight.bold),
         ),
       ),
     );

@@ -42,5 +42,9 @@ flutter:
 
     - family: starjhol
       fonts:
-      - asset: assets/fonts/starjedi/Starjhol.ttf
+      - asset: assets/fonts/starjhol/Starjhol.ttf
+
+    - family: starjout
+      fonts:
+      - asset: assets/fonts/starjout/Starjout.ttf
 
