@@ -9,6 +9,7 @@ import 'package:challenge_flutter_2022/data/repository/report_sighting_repositor
 import 'package:challenge_flutter_2022/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
@@ -19,7 +20,8 @@ Future<void> main() async {
   Hive.registerAdapter(SwitchStatusAdapter());
   await Hive.openBox<SwitchStatus>('status');
   //
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   final storage = await HydratedStorage.build(
     storageDirectory: await getApplicationDocumentsDirectory(),
   );
@@ -31,27 +33,14 @@ Future<void> main() async {
   );
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  late Box<SwitchStatus> switchStatusBox;
-
-  @override
-  void initState() {
-    super.initState();
-    // Hive
-    switchStatusBox = Hive.box('status');
-    //
-  }
 
   @override
   Widget build(BuildContext context) {
     //Hive
+    late Box<SwitchStatus> switchStatusBox;
+    switchStatusBox = Hive.box('status');
     bool status = switchStatusBox.get(0) == null
         ? false
         : switchStatusBox.get(0)!.status == false

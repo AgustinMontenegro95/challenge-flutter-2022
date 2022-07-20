@@ -7,6 +7,7 @@ import 'package:challenge_flutter_2022/screens/widgets/background.dart';
 import 'package:challenge_flutter_2022/screens/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -30,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         }
         if (state is CharacterLoadedState) {
+          FlutterNativeSplash.remove();
           List<CharacterModel> characters = state.character;
           return Scaffold(
             extendBodyBehindAppBar: true,
