@@ -205,6 +205,8 @@ class AttributesScreen extends StatelessWidget {
                       ],
                     )
                   : Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text.rich(
                           TextSpan(
